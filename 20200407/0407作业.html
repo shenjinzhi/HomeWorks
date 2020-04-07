@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>0407作业</title>
+</head>
+
+<body>
+    <script>
+        //正则方式获取url参数
+        let str = 'https://baidu.com?abc=123&zf=666&px=888&_=f';
+        let reg = /([^?&=]+)=([^?&=]+)/g;
+
+        function execAll(str = "") {
+            if (!this.global) return this.exec(str);
+            let ary = [],
+                res = this.exec(str);
+            while (res) {
+                ary.push(res[0]);
+                res = this.exec(str);
+            }
+            return ary.length === 0 ? null : ary;
+        }
+        RegExp.prototype.execAll = execAll;
+
+        function queryParams() {
+            let a = reg.execAll(str);
+            let obj = {};
+            a.forEach(item => {
+                let b = item.split('=');
+                obj[b[0]] = b[1];
+            })
+            return obj;
+        };
+        console.log(queryParams(str))
+
+
+
+        // 1 -获取一个字符串中出现次数最多的字符 及其 次数 
+        var str = 'ertefvzdgfergsegfsdrgrgfbshtrh';
+
+        str = str.split('').sort((a, b) => a.localeCompare(b)).join('');
+        let ary = str.match(/([a-zA-Z])\1+/g).sort((a, b) => b.length - a.length);
+        let max = ary[0].length,
+            res = [ary[0].substr(0, 1)];
+        for (let i = 1; i < ary.length; i++) {
+            let item = ary[i];
+            if (item.length < max) {
+                break;
+            }
+            res.push(item.substr(0, 1));
+        }
+        console.log(`出现次数最多的字符：${res}，出现了${max}次`);
+
+
+
+        // 2- 实现一个千分符的函数 
+        // ‘124252343’  ‘124,252,343’
+        let str = "124252343" ;
+        function millimeter() {
+            return this.replace(/\d{1,3}(?=(\d{3})+$)/g, content => content + ',');
+        }
+        String.prototype.millimeter = millimeter;
+        console.log(str.millimeter())
+
+
+
+        //3- 结合replace实现 queryParams
+        let str = 'https://baidu.com?abc=123&zf=666&px=888&_=f';
+        function queryURLParams() {
+            let obj = {};
+            this.replace(/([^?=&#]+)=([^?=&#]+)/g, (_, key, value) => obj[key] = value);
+            this.replace(/#([^?=&#]+)/g, (_, hash) => obj['HASH'] = hash);
+            return obj;
+        }
+        String.prototype.queryURLParams = queryURLParams;
+        console.log(str.queryURLParams())
+
+    </script>
+</body>
+
+</html>
