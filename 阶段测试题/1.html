@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+
+    <!-- <script>
+        var class2type = {};
+        var toString = class2type.toString; //=>Object.prototype.toString 检测数据类型
+
+        var fnToString = hasOwn.toString; //=>Function.prototype.toString 转换字符串
+        var ObjectFunctionString = fnToString.call(Object); //=>"function Object() { [native code] }" 把内置类Object转换为字符串
+
+        //=================================
+        let arr = "Boolean Number String Function Array Date RegExp Object Error Symbol".split(" "); //=>["Boolean", "Number", "String", "Function", "Array", "Date", "RegExp", "Object", "Error", "Symbol"]
+        arr.forEach(item => {
+            class2type["[object " + item + "]"] = item.toLowerCase();
+        });
+        /*
+        console.log(class2type);
+        {
+          [object Boolean]: "boolean", 
+          [object Number]: "number", 
+          [object String]: "string"
+          ......
+        }
+         */
+
+        //=============================
+        function toType(obj) {
+            //传递给我的是null/undefined，直接返回 "null"/"undefined"
+            if (obj == null) {
+                return obj + "";
+            }
+            // typeof obj === "object" || typeof obj === "function" =>引用数据类型
+            //   => 如果是基本数据类型值，检测数据类型使用typeof就很“香”
+            //   => 如果是引用数据类型值，则基于toString这一套来搞定
+            //         => toString.call(obj)  检测当前值的数据类型 "[object Xxx]"
+            //         => class2type["[object Xxx]"] 当上一步生成的对象中，基于对应的属性名，找到属性值（所属的数据类型），如果没有则返回 "object"
+            return typeof obj === "object" || typeof obj === "function" ?
+                class2type[toString.call(obj)] || "object" :
+                typeof obj;
+        }
+    </script>
+ -->
+
+    <!-- <script>
+        // 11题
+        function toType(obj) {
+            let class2type = {},
+                toString = class2type.toString,
+                arr = "Boolean Number String Function Array Date RegExp Object Error Symbol".split(" ");
+            arr.forEach(item => {
+                class2type["[object " + item + "]"] = item.toLowerCase();
+            })
+
+            if (obj == null) {
+                return "" + obj;
+            }
+            return typeof obj === "object" || typeof obj === "function" ? class2type[toString.call(obj)] || "object" : typeof obj;
+        };
+
+        console.log(toType(1)); //=>"number"
+        console.log(toType(NaN)); //=>"number"
+        console.log(toType([])); //=>"array"
+        console.log(toType(/^\d+$/)); //=>"regexp"
+        console.log(toType({})); //=>"object"
+        console.log(toType(null)); //=>"object"
+        console.log(toType()); //=>"object"
+
+    </script> -->
+
+    <!-- <script>
+        let utils = (function () {
+            /*
+             * toArray：转换为数组的方法
+             *   @params
+             *      不固定数量，不固定类型
+             *   @return
+             *      [Array] 返回的处理后的新数组
+             * by zhufengpeixun on 2020
+             */
+            function toArray() {
+                //=>实现你的代码（多种办法实现）
+                return [].slice.call(arguments);
+
+
+            }
+
+            return {
+                toArray
+            };
+        })();
+        let ary = utils.toArray(10, 20, 30); //=>[10,20,30]
+        console.log(ary);
+        ary = utils.toArray('A', 10, 20, 30); //=>['A',10,20,30]
+        console.log(ary);
+
+    </script> -->
+
+    <script>
+        /* 重写内置call
+         *  1、改变this指向   
+         *  2、让函数执行
+         *  3、如果是数字类型的
+         */
+~function () {
+    function change(context, ...args) {
+        //=>实现你的代码
+        context == null? context = window : null;
+        if (typeof context !== "object" && typeof context !== "function") {
+            context = new context.constructor(context);
+        }
+
+        let uniqueKey = `$$${new Date().getTime()}`;
+        context[uniqueKey] = this;
+        let result = context[uniqueKey](...args);
+        delete context[uniqueKey];
+        return result;
+    };
+
+    Function.prototype.change = change;
+}();
+let obj = { name: 'zhufeng' };
+function func(x, y) {
+    this.total = x + y;
+    return this;
+}
+let res = func.change(obj,100,200);
+//res => {name:'Alibaba',total:300}
+
+
+       
+
+    
+    </script>
+</body>
+
+</html>
