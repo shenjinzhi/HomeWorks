@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .product {
+            width: 400;
+
+        }
+
+        .product li {
+            width: 400px;
+            height: 200px;
+            margin: 20px 50px;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            border: 3px solid red;
+        }
+
+        .detail {
+            /* 相对于body定位 */
+            width: 600px;
+            height: 400px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            /* display: none; */
+        }
+    </style>
+</head>
+
+<body>
+    <ul class="product">
+        <li>
+            <img src="images/banner1.jpg" alt="" big-img="images/banner1.jpg">
+        </li>
+        <li>
+            <img src="images/banner2.jpg" alt="" big-img="images/banner2.jpg">
+        </li>
+        <li>
+            <img src="images/banner6.jpg" alt="" big-img="images/banner6.jpg">
+        </li>
+       
+    </ul>
+    <!-- 展示的详情 -->
+    <!-- <div class="detail">
+        <img src="images/banner1.jpg" alt="">
+    </div> -->
+
+
+    <script src="jquery.min.js"></script>
+    <script>
+        let $product = $('.product'),
+            $list = $product.children('li'),
+            $body = $('body'),
+            $detail = null;
+
+        function computed(ev) {
+            $detail.css({
+                top:ev.pageY + 15,
+                left:ev.pageX+15
+            });
+        }
+
+        $list.mouseover(function (ev) {
+            //console.log(444)
+            let $this = $(this),
+                bigImg = $(this).children('img').attr('big-img');
+            if (!$detail) {
+                $body.append(`<div class="detail">
+                                <img src="${bigImg}" alt="">
+                            </div>`);
+                $detail = $('.detail');
+            }
+            computed(ev);
+        }).mouseout(function (ev) {
+            if ($detail) {
+                $detail.remove();
+                $detail = null;
+            }
+        }).mousemove(computed);
+
+
+
+    </script> 
+</body>
+
+</html>
