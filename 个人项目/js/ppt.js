@@ -283,10 +283,8 @@ let docerPpt = (function () {
             queryData();
             handle(data);
             lazyFunc();
+            ev.stopPropagation();
         })
-
-
-
     };
 
 
@@ -403,4 +401,4 @@ let docerPpt = (function () {
     }
 })()
 docerPpt.init();
-// input
+

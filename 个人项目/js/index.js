@@ -408,6 +408,22 @@ let docer = (function () {
         }
     }
 
+    // 侧面导航栏锚点定位
+    let positionModule = function positionModule() {
+        let side = document.querySelector('.side'),
+            nameNav = side.querySelector('.name-nav'),
+            aList = nameNav.querySelectorAll('a');
+        //console.log(aList);
+        [...aList].forEach((item, index) => {
+            item.onclick = function () {
+                for (let i = 0; i < aList.length; i++) {
+                    aList[i].className = '';
+                }
+                item.className = 'active';
+            }
+        }) 
+    }
+
     return {
         init() {
             bannerModule();
@@ -420,6 +436,7 @@ let docer = (function () {
             rankModule();
             knowModule();
             designerModule();
+            positionModule();
             window.onscroll = function () {
                 let st = document.documentElement.scrollTop,
                     ct = document.documentElement.clientHeight;

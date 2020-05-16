@@ -1398,19 +1398,20 @@ body {
   height: 32px;
   line-height: 32px;
 }
-.side .side-nav .name-nav .control-list .list-item span {
+.side .side-nav .name-nav .control-list .list-item a {
+  color: #999;
   display: inline-block;
   height: 24px;
   width: 100%;
   line-height: 24px;
   text-align: center;
 }
-.side .side-nav .name-nav .control-list .list-item:hover span {
+.side .side-nav .name-nav .control-list .list-item:hover a {
   color: #fff;
   background-color: #eb4e2f;
 }
 .side .side-nav .name-nav .control-list .active {
-  color: #fff;
+  color: #fff !important;
   background-color: #eb4e2f;
 }
 .side .side-nav .my {
